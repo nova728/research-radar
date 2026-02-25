@@ -1,0 +1,50 @@
+# ── Python ──────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── 虚拟环境 ────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── 用户数据（存在 ~/.research-radar/，不在项目里）──
+*.db
+*.sqlite
+*.sqlite3
+
+# ── 前端构建产物 ─────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ── 环境变量 / 密钥 ──────────────────────────────
+.env
+.env.*
+config.json
+
+# ── PyInstaller 打包产物 ─────────────────────────
+backend/dist/
+backend/build/
+backend/*.spec
+
+# ── macOS ────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ── IDE ──────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# ── 日志 ────────────────────────────────────────
+*.log

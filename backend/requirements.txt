@@ -1,0 +1,17 @@
+# ── 核心依赖（必须）──────────────────────────────
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+arxiv>=2.1.0
+
+# ── 可选依赖（功能增强）──────────────────────────
+# 定时抓取（不装则只能手动触发）
+apscheduler>=3.10.0
+
+# 更好的聚类效果（不装则用 TF-IDF）
+scikit-learn>=1.4.0
+
+# 语义检索（不装则用 TF-IDF，安装后自动升级）
+# sentence-transformers>=2.6.0   # 约 500MB，按需开启
+
+# OpenAI / DeepSeek API（按需）
+openai>=1.30.0
