@@ -194,3 +194,30 @@ def export_papers_md(week_offset: int = Query(None)):
         media_type="text/markdown; charset=utf-8",
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
+
+
+@router.get("/digest")
+def export_digest(
+    week_offset: int = Query(0, ge=-52, le=0),
+    lang: str = Query("zh"),
+    top_n: int = Query(5, ge=1, le=20),
+):
+    """
+    导出每周精选深度摘要报告（Markdown）。
+    对每篇论文调用 LLM 生成核心方法 / 对比基线 / 借鉴意义三段分析，按主题分组。
+    top_n: 每个主题最多收录的论文数（默认 5）。
+    """
+    from datetime import datetime, timedelta
+    from app.agent.daily_digest import generate_digest
+
+    target = datetime.now() + timedelta(weeks=week_offset)
+    iso = target.isocalendar()
+    week_label = f"{iso[0]}-W{iso[1]:02d}"
+
+    content = generate_digest(week_offset=week_offset, lang=lang, top_n=top_n)
+    filename = f"research-digest-{week_label}.md"
+    return Response(
+        content,
+        media_type="text/markdown; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )

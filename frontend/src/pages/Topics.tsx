@@ -3,12 +3,13 @@ import { IconMap, IconChevronUp, IconChevronDown, IconExternalLink, IconLoader, 
 import { useLang } from "../LangContext"
 
 export default function Topics() {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const [clusters, setClusters] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [expanded, setExpanded] = useState<number | null>(null)
   const [weekOffset, setWeekOffset] = useState(0)
   const [exporting, setExporting] = useState(false)
+  const [exportingDigest, setExportingDigest] = useState(false)
 
   useEffect(() => { fetchClusters() }, [weekOffset])
 
@@ -35,6 +36,21 @@ export default function Topics() {
       URL.revokeObjectURL(url)
     } catch (e) { console.error(e) }
     setExporting(false)
+  }
+
+  async function downloadDigest() {
+    setExportingDigest(true)
+    try {
+      const res = await fetch(`/api/papers/digest?week_offset=${weekOffset}&lang=${lang}`)
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = `research-digest.md`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (e) { console.error(e) }
+    setExportingDigest(false)
   }
 
   function handleAnalysisDone(cluster_id: number, analysis: any) {
@@ -83,6 +99,21 @@ export default function Topics() {
           >
             <IconDownload size={14} color="#475569" />
             {exporting ? "…" : t.exportMd(weekLabel(weekOffset))}
+          </button>
+          <button
+            onClick={downloadDigest}
+            disabled={exportingDigest || clusters.length === 0}
+            title={t.exportDigest(weekLabel(weekOffset))}
+            style={{
+              padding: "6px 12px", border: "1px solid #10b981",
+              background: exportingDigest ? "#f0fdf4" : "#fff", color: "#059669",
+              borderRadius: 8, cursor: clusters.length === 0 ? "not-allowed" : "pointer",
+              fontSize: 12, fontWeight: 500, display: "flex", alignItems: "center", gap: 5,
+              opacity: clusters.length === 0 ? 0.5 : 1, transition: "all 0.15s",
+            }}
+          >
+            <IconDownload size={14} color="#059669" />
+            {exportingDigest ? "⏳ …" : t.exportDigest(weekLabel(weekOffset))}
           </button>
         </div>
       </div>

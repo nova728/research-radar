@@ -21,6 +21,7 @@
 | 📊 **趋势检测** | 多周折线图，直观看出哪些方向在升温、哪些在降温，LLM 自动解读 |
 | 🗂 **议题地图** | 同一议题论文自动聚类，LLM 横向分析方法异同与开放问题 |
 | 💬 **对话查询** | 问「最近 XXX 方向有什么进展」，基于本地论文库 RAG 回答 |
+| 📋 **精选报告** | 多维评分筛选本周亮点论文，逐篇生成深度解读，一键导出 Markdown |
 | 🌐 **中英双语** | 界面与 AI 分析均支持一键切换语言 |
 
 **🔒 所有数据完全本地存储，不上传任何内容。**
@@ -152,6 +153,35 @@ bash run.sh
 
 ---
 
+## 📋 精选报告示例
+
+在**议题地图**页面选择目标周，点击绿色「导出 精选报告」按钮，即可获得如下结构的 Markdown 文档：
+
+```
+# 📋 2026-W08 研究精选
+> 筛选规则：标题新颖度 + 摘要实证强度 + 合作规模 + 时效性，每方向取 Top 5
+
+## 🔬 Efficient LLM（Top 5 / 共 38 篇）
+
+### 1. 🌟 EfficientKV: Unified Key-Value Cache Compression...
+**作者:** Zhang Wei, Li Ming et al.　　**日期:** 2026-02-21　　**评分:** 82/100　　[ArXiv](...)
+
+**💡 核心方法：** 提出统一的 KV Cache 压缩框架，通过...
+**📊 对比基线：** 在 LongBench 上相比 H2O、SnapKV 提升...
+**✨ 借鉴意义：** 为长文本推理场景提供了即插即用的加速方案...
+```
+
+> 导出的 `.md` 文件可直接导入 **Obsidian、Notion、Typora** 等笔记工具。
+
+`docs/examples/` 目录中存放了真实生成的样例文件供参考：
+
+| 文件 | 说明 |
+|------|------|
+| [`docs/examples/digest-sample-zh.md`](docs/examples/digest-sample-zh.md) | 中文精选报告真实样例（2026-W09，含评分与 LLM 解读） |
+| [`docs/examples/export-papers-sample.md`](docs/examples/export-papers-sample.md) | 论文列表导出样例（2026-W09，469 篇，按主题分组） |
+
+---
+
 ## 📁 项目结构
 
 ```
@@ -164,12 +194,15 @@ research-radar/
 │   │       ├── crawler.py          # ArXiv 抓取
 │   │       ├── trend_analyzer.py   # ★ 趋势检测
 │   │       ├── cluster_analyzer.py # ★ 议题聚类
+│   │       ├── daily_digest.py     # ★ 精选报告生成（多维评分 + LLM 解读）
 │   │       ├── rag_chat.py         # ★ 对话查询 RAG
 │   │       ├── llm.py              # LLM 统一封装（Ollama/OpenAI/DeepSeek）
 │   │       └── scheduler.py        # 定时任务
 │   └── requirements.txt
 ├── frontend/                       # React 18 + TypeScript + Recharts
-├── docs/screenshots/               # 界面截图
+├── docs/
+│   ├── screenshots/                # 界面截图
+│   └── examples/                   # 精选报告生成样例（.md）
 ├── run.sh                          # 一键启动
 ├── README.md                       # 中文文档（默认）
 └── README_EN.md                    # English documentation

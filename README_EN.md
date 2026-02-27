@@ -21,6 +21,7 @@ Not "what papers came out today", but "**what is happening in this field**".
 | 📊 **Trend Detection** | Multi-week line chart showing which directions are heating up or cooling down, with LLM-powered interpretation |
 | 🗂 **Topic Map** | Papers auto-clustered by topic; LLM analyzes method differences and open questions across papers |
 | 💬 **Chat Query** | Ask "what's new in XXX recently?" — RAG answers based on your local paper library |
+| 📋 **Digest Report** | Multi-dimensional scoring selects weekly highlights; LLM writes per-paper analysis; export as Markdown |
 | 🌐 **Bilingual** | Full UI and AI analysis in Chinese & English, switchable with one click |
 
 **🔒 All data stored locally. Nothing is uploaded.**
@@ -152,6 +153,35 @@ After adding, click "Fetch Now" to retrieve the latest papers for that topic.
 
 ---
 
+## 📋 Digest Report Example
+
+On the **Topic Map** page, select a week and click the green **"Export Digest"** button. You'll get a Markdown file structured like this:
+
+```
+# 📋 2026-W08 Weekly Research Digest
+> Selection: title novelty + empirical signals + collaboration + recency — Top 5 per topic
+
+## 🔬 Efficient LLM (Top 5 of 38 papers)
+
+### 1. 🌟 EfficientKV: Unified Key-Value Cache Compression...
+**Authors:** Zhang Wei, Li Ming et al.　　**Date:** 2026-02-21　　**Score:** 82/100　　[ArXiv](...)
+
+**💡 Core Method:** Proposes a unified KV Cache compression framework that...
+**📊 Comparison:** Outperforms H2O and SnapKV on LongBench by...
+**✨ Takeaway:** A plug-and-play acceleration solution for long-context inference...
+```
+
+> The exported `.md` file can be imported directly into **Obsidian, Notion, Typora**, etc.
+
+Real generated samples are available in `docs/examples/` for reference:
+
+| File | Description |
+|------|-------------|
+| [`docs/examples/digest-sample-zh.md`](docs/examples/digest-sample-zh.md) | Chinese digest sample (2026-W09, with scores & LLM analysis) |
+| [`docs/examples/export-papers-sample.md`](docs/examples/export-papers-sample.md) | Paper list export sample (2026-W09, 469 papers by topic) |
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -164,12 +194,15 @@ research-radar/
 │   │       ├── crawler.py          # ArXiv crawler
 │   │       ├── trend_analyzer.py   # ★ Trend detection
 │   │       ├── cluster_analyzer.py # ★ Topic clustering
+│   │       ├── daily_digest.py     # ★ Digest generation (scoring + LLM analysis)
 │   │       ├── rag_chat.py         # ★ RAG chat
 │   │       ├── llm.py              # Unified LLM wrapper (Ollama/OpenAI/DeepSeek)
 │   │       └── scheduler.py        # Scheduled tasks
 │   └── requirements.txt
 ├── frontend/                       # React 18 + TypeScript + Recharts
-├── docs/screenshots/               # UI screenshots
+├── docs/
+│   ├── screenshots/                # UI screenshots
+│   └── examples/                   # Generated digest samples (.md)
 ├── run.sh                          # One-command launch
 ├── README.md                       # 中文文档（默认）
 └── README_EN.md                    # English documentation (this file)

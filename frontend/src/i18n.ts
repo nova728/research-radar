@@ -38,6 +38,7 @@ export interface I18n {
   analysisReady: string
   exportMd: (label: string) => string
   exportMdWeek: string
+  exportDigest: (label: string) => string
 
   chatTitle: string; chatSub: string
   llmWarning: string; llmWarning2: string
@@ -119,6 +120,7 @@ export const translations: Record<Lang, I18n> = {
     analysisReady: "AI 分析已生成",
     exportMd: (label) => `导出 ${label} MD`,
     exportMdWeek: "导出本周 MD",
+    exportDigest: (label) => `导出 ${label} 精选报告`,
 
     chatTitle: "对话查询",
     chatSub: "基于本地论文库，RAG 智能回答研究问题",
@@ -210,6 +212,7 @@ export const translations: Record<Lang, I18n> = {
     analysisReady: "AI analysis ready",
     exportMd: (label) => `Export ${label} MD`,
     exportMdWeek: "Export This Week MD",
+    exportDigest: (label) => `Export ${label} Digest`,
 
     chatTitle: "Chat Query",
     chatSub: "RAG-powered Q&A over your local paper library",
